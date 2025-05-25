@@ -1,0 +1,13 @@
+SELECT product_id, SUM(sales_amount) AS total_sales, AVG(sales_amount) AS avg_sales
+FROM sales_data
+GROUP BY product_id
+ORDER BY total_sales DESC;
+
+EXEC msdb.dbo.sp_add_job  
+    @job_name = 'Daily Data Cleanup';  
+
+CREATE DATABASE BusinessData ON PRIMARY 
+(NAME = 'BusinessData', FILENAME = '/cloudstorage/businessdata.mdf');
+
+SELECT * FROM sys.dm_db_resource_stats
+WHERE database_name = 'businessdb';
